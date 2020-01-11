@@ -1,0 +1,4 @@
+{
+  "code": "export default class GameMain extends Laya.Sprite {\r\n}\r\n",
+  "references": []
+}
