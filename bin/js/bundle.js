@@ -21,9 +21,6 @@
     GameConfig.exportSceneToJson = true;
     GameConfig.init();
 
-    class GameMain extends Laya.Sprite {
-    }
-
     class Main {
         constructor() {
             if (window["Laya3D"])
@@ -50,8 +47,6 @@
             Laya.AtlasInfoManager.enable("fileconfig.json", Laya.Handler.create(this, this.onConfigLoaded));
         }
         onConfigLoaded() {
-            let game = new GameMain();
-            Laya.stage.addChild(game);
         }
     }
     new Main();

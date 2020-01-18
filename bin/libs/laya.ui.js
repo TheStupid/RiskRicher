@@ -958,16 +958,26 @@
 	Laya.ClassUtils.regClass("Laya.Box", Box);
 
 	class Button extends UIComponent {
-	    constructor(skin = null, label = "") {
+		constructor(skin = null, label = "") {
 	        super();
 	        this._labelColors = Styles.buttonLabelColors;
 	        this._state = 0;
 	        this._autoSize = true;
 	        this._stateNum = Styles.buttonStateNum;
 	        this._stateChanged = false;
+	        this._enabled = true;
 	        this.skin = skin;
 	        this.label = label;
 	    }
+
+	    get enbaled(){
+			return this._enabled;
+		}
+
+		set enbaled(value){
+			this._enabled = value;
+		}
+
 	    destroy(destroyChild = true) {
 	        super.destroy(destroyChild);
 	        this._bitmap && this._bitmap.destroy();
@@ -1009,7 +1019,7 @@
 	            this._clickHandler && this._clickHandler.run();
 	            return;
 	        }
-	        !this._selected && (this.state = Button.stateMap[e.type]);
+			this.enbaled && !this._selected && (this.state=Button.stateMap[e.type]);
 	    }
 	    get skin() {
 	        return this._skin;

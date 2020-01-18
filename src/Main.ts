@@ -1,5 +1,5 @@
 import GameConfig from "./GameConfig";
-import GameMain from "./GameMain";
+import GameStarter from "./GameStarter";
 class Main {
 	constructor() {
 		//根据IDE设置初始化引擎		
@@ -31,9 +31,7 @@ class Main {
 
 	onConfigLoaded(): void {
 		//加载IDE指定的场景
-		// GameConfig.startScene && Laya.Scene.open(GameConfig.startScene);
-		let game:GameMain = new GameMain();
-		Laya.stage.addChild(game);
+		new GameStarter().start();
 	}
 }
 //激活启动类

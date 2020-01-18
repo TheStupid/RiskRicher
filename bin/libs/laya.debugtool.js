@@ -1598,7 +1598,7 @@ var Base64ImageTool=(function(){
 		rst=[];
 		var key;
 		for (key in base64Data){
-			rst.push({url:base64Data[key],type:/*laya.net.Loader.IMAGE*/"image" });
+			rst.push({url:base64Data[key],type:/*laya.net.FileLoader.IMAGE*/"image" });
 		}
 		return rst;
 	}
@@ -1836,7 +1836,7 @@ var GetSetProfile=(function(){
 		}
 	}
 
-	GetSetProfile.init=function(){
+	GetSetProfile.start=function(){
 		if (GetSetProfile._inited)
 			return;
 		GetSetProfile._inited=true;
@@ -2446,7 +2446,7 @@ var SpriteRenderHook=(function(){
 		RenderAnalyser.I.render(this,Browser.now()-preTime);
 	}
 
-	SpriteRenderHook.init=function(){
+	SpriteRenderHook.start=function(){
 		if (SpriteRenderHook.I)return;
 		SpriteRenderHook.I=new SpriteRenderHook();
 		SpriteRenderHook.setRenderHook();
@@ -2528,7 +2528,7 @@ var DisController=(function(){
 		this.arrowAxis.type=lenType;
 	});
 
-	DisController.init=function(){
+	DisController.start=function(){
 		if (DisController._container){
 			DisControlTool.setTop(DisController._container);
 			return;
@@ -6351,7 +6351,7 @@ var StyleConsts=(function(){
 var DivScripts=(function(){
 	function DivScripts(){}
 	__class(DivScripts,'laya.debug.divui.DivScripts');
-	DivScripts.init=function(){
+	DivScripts.start=function(){
 		var script;
 		script=Base64Tool.decodeToByte(DivScripts.data).readUTFBytes();
 		Laya._runScript(script);
@@ -6384,7 +6384,7 @@ var DisplayHook=(function(){
 
 	__class(DisplayHook,'laya.debug.tools.DisplayHook');
 	var __proto=DisplayHook.prototype;
-	__proto.init=function(canvas){
+	__proto.start=function(canvas){
 		var _$this=this;
 		if (Browser.window.navigator.msPointerEnabled){
 			canvas.style['-ms-content-zooming']='none';
@@ -7571,7 +7571,7 @@ var WalkTools=(function(){
 var DebugTxt=(function(){
 	function DebugTxt(){}
 	__class(DebugTxt,'laya.debug.tools.DebugTxt');
-	DebugTxt.init=function(){
+	DebugTxt.start=function(){
 		if (DebugTxt._txt)return;
 		DebugTxt._txt=new Text();
 		DebugTxt._txt.pos(100,100);
@@ -7786,7 +7786,7 @@ return JsonTool;
 var Base64Tool=(function(){
 	function Base64Tool(){}
 	__class(Base64Tool,'laya.debug.tools.Base64Tool');
-	Base64Tool.init=function(){
+	Base64Tool.start=function(){
 		if (Base64Tool.lookup)
 			return;
 		Base64Tool.lookup=new Uint8Array(256)
@@ -8026,7 +8026,7 @@ var Base64Atlas=(function(){
 	__class(Base64Atlas,'laya.debug.tools.Base64Atlas');
 	var __proto=Base64Atlas.prototype;
 	//preLoad();
-	__proto.init=function(){
+	__proto.start=function(){
 		this.replaceO={};
 		var key;
 		for (key in this.data){
@@ -8142,7 +8142,7 @@ var CommonTools=(function(){
 var DisResizer=(function(){
 	function DisResizer(){}
 	__class(DisResizer,'laya.debug.tools.resizer.DisResizer');
-	DisResizer.init=function(){
+	DisResizer.start=function(){
 		if (DisResizer._up)return;
 		DisResizer._up=new AutoFillRec("T");
 		DisResizer._up.height=2;
@@ -8384,7 +8384,7 @@ var RenderSpriteHook=(function(){
 		}
 	}
 
-	RenderSpriteHook.init=function(){
+	RenderSpriteHook.start=function(){
 		if (RenderSpriteHook._oldCanvas)return;
 		RenderSpriteHook._oldCanvas=RenderSprite["prototype"]["_canvas"];
 		RenderSprite["prototype"]["_canvas"]=RenderSpriteHook["prototype"]["_canvas"];
@@ -8576,7 +8576,7 @@ var LoaderHook=(function(_super){
 		return _super.prototype.load.call(this,url,complete,progress,type,priority,cache,group,ignoreCache,useWorkerLoader);
 	}
 
-	LoaderHook.init=function(){
+	LoaderHook.start=function(){
 		if (LoaderHook.isInited)return;
 		LoaderHook.isInited=true;
 		Laya.loader=new LoaderHook();
@@ -8651,7 +8651,7 @@ var DebugInfoLayer=(function(_super){
 		return DisControlTool.isInTree(this,sprite);
 	}
 
-	DebugInfoLayer.init=function(){
+	DebugInfoLayer.start=function(){
 		if (!DebugInfoLayer.I){
 			new DebugInfoLayer();
 			Laya.stage.addChild(DebugInfoLayer.I);
@@ -8943,7 +8943,7 @@ var NodeInfosItem=(function(_super){
 		Pool.recover("NodeInfosItem",this);
 	}
 
-	NodeInfosItem.init=function(){
+	NodeInfosItem.start=function(){
 		if (!NodeInfosItem.NodeInfoContainer){
 			DebugInfoLayer.init();
 			NodeInfosItem.NodeInfoContainer=DebugInfoLayer.I;
@@ -9652,7 +9652,7 @@ var NodeInfoPanel=(function(_super){
 		}
 	}
 
-	NodeInfoPanel.init=function(){
+	NodeInfoPanel.start=function(){
 		if (!NodeInfoPanel.I){
 			NodeInfoPanel.I=new NodeInfoPanel();
 			NodeInfosItem.init();
