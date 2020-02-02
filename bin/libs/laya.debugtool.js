@@ -1668,7 +1668,7 @@ var ValueChanger=(function(){
 		this.value=this.preValue;
 	}
 
-	__proto.dispose=function(){
+	__proto.clear=function(){
 		this.target=null;
 	}
 

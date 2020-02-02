@@ -13,4 +13,6 @@ export default class BaseConfig {
     public static getNecessaryFiles():Array<string>{
         return BaseConfig.NECESSARY_FILES;
     }
+
+    public static readonly DEFAULT_FONT:string = "SimSun";
 }

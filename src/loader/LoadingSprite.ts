@@ -1,16 +1,10 @@
-﻿import CustomProgressBar from "../common/component/CustomProgressBar";
-import FileLoader from './FileLoader';
-import StringUtil from '../common/StringUtil';
-import CommonRes from "../config/CommonRes";
-import ProgressBar = Laya.ProgressBar;
+﻿import StringUtil from '../common/StringUtil';
+import BaseConfig from "../config/BaseConfig";
+import GameConfig from "../GameConfig";
 import Sprite = Laya.Sprite;
 import Text = Laya.Text;
-import View = Laya.View;
 
 export default class LoadingSprite extends Sprite {
-
-    protected _res: View;
-    protected _progressBar: ProgressBar | CustomProgressBar;
     protected _txtLoading: Text;
 
     protected _progress: number = -1;
@@ -19,10 +13,6 @@ export default class LoadingSprite extends Sprite {
     constructor() {
         super();
         this.mouseEnabled = true;
-        this._res = new View();
-        this._res.createView(FileLoader.getRes("loader/LoadingSprite.json"));
-        this.addChild(this._res);
-        this.initProgressComponent();
         this.initLoadingText();
         Laya.stage.on(Laya.Event.RESIZE, this, this.onStageResize);
         this.onStageResize();
@@ -51,14 +41,6 @@ export default class LoadingSprite extends Sprite {
         if (this._loadingText) {
             this._txtLoading.text = this.getFormatLoadingText();
         }
-
-        if (this._progressBar != null) {
-            if(this._progressBar instanceof  ProgressBar){
-                (this._progressBar as ProgressBar).value = this._progress / 100;
-            }else{
-                (this._progressBar as CustomProgressBar).value = this._progress / 100;
-            }
-        }
     }
 
     private getFormatLoadingText(): string {
@@ -75,18 +57,18 @@ export default class LoadingSprite extends Sprite {
         Laya.stage.off(Laya.Event.RESIZE, this, this.onStageResize);
     }
 
-    protected initProgressComponent(): void {
-        this._progressBar = this.getChildByName("progressBar") as ProgressBar | CustomProgressBar;
-        this._progress = 0;
-        this.refresh();
-    }
-
     protected initLoadingText(): void {
-        this._txtLoading = this.getChildByName("txtLoading") as Text;
+        this._txtLoading = new Text();
+        this._txtLoading.font = BaseConfig.DEFAULT_FONT;
+        this._txtLoading.align = "center";
+        this._txtLoading.valign = "middle";
+        this._txtLoading.fontSize = 20;
+        this.x = GameConfig.width / 2;
+        this.y = GameConfig.height / 2;
+        this.addChild(this._txtLoading);
     }
 
     protected disposeProgressComponent(): void {
-        this._progressBar = null;
     }
 
     protected disposeLoadingText(): void {

@@ -6,51 +6,57 @@ import LayerNames from "../layer/LayerNames";
 import DisplayUtil from "../common/DisplayUtil";
 import FileLoader from "./FileLoader";
 import CustomLoaderEvent from "./CustomLoaderEvent";
+import LoadTask from "./LoadTask";
 
 export default class CustomLoader extends EventDispatcher {
-    private loadList: Object[];
-
-    /** 下载后是否自动关闭 */
-    private autoClose: boolean;
+    private static _instance: CustomLoader = null;
+    public static get instance(): CustomLoader {
+        if (this._instance == null) {
+            this._instance = new CustomLoader();
+        }
+        return this._instance;
+    }
 
     /** 提示框 */
     private _loadingSprite: LoadingSprite;
 
-    /** 下载提示语 */
-    private message: string;
+    private _loadTaskList: Array<LoadTask> = [];
 
     constructor() {
         super();
     }
 
-    public get loadingSprite(): LoadingSprite {
-        return this._loadingSprite;
-    }
-
     /**
      * 启动文件下载
      * @param    loadList            要下载的文件列表
-     * @param    loadingSpritType    下载提示框类型
-     * @param    autoClose            下载完后自动关闭提示窗口，默认为true
      * @param    message                下载提示语
-     * @param    name                下载需要获取的类名
      **/
-    public load(loadList: Object[], loadingSprite: LoadingSprite, autoClose: boolean = true, message: string = "请稍等……"): void {
-        this.loadList = loadList;
-        this.message = message;
-        this.autoClose = autoClose;
-        this._loadingSprite = new LoadingSprite();
+    public load(url: string | string[], message: string = "文件下载中，请稍候……"): void {
+        let task: LoadTask = new LoadTask(url, message);
 
-        if (this._loadingSprite != null) {
-            this._loadingSprite.setLoadingText(message);
-            LayerManager.instance.getLayer(LayerNames.TOP_LAYER).addChild(this._loadingSprite);
+        if (this.isLoading) {
+            this._loadTaskList.push(task);
+        } else {
+            this.startLoadTask(task);
         }
+    }
 
-        if (loadList.length > 0) {
-            this.loadFiles();
+    private onLoadTaskEnd(): void {
+        if (this._loadTaskList.length > 0) {
+            this.startLoadTask(this._loadTaskList.shift())
         } else {
             this.onCompleted();
         }
+    }
+
+    private startLoadTask(task: LoadTask): void {
+        if (this._loadingSprite == null) {
+            this._loadingSprite = new LoadingSprite();
+            this._loadingSprite.setLoadingText(task.loadText);
+            LayerManager.instance.getLayer(LayerNames.TOP_LAYER).addChild(this._loadingSprite);
+        }
+
+        FileLoader.load(task.url, Handler.create(this, this.onLoadTaskEnd), Handler.create(this, this.onProgress, null, false));
     }
 
     public close(): void {
@@ -61,16 +67,8 @@ export default class CustomLoader extends EventDispatcher {
         }
     }
 
-    private loadFiles(): void {
-        FileLoader.load(this.loadList
-            , Handler.create(this, this.onCompleted)
-            , Handler.create(this, this.onProgress, null, false));
-    }
-
     private onCompleted(): void {
-        if (this.autoClose) {
-            this.close();
-        }
+        this.close();
         this.event(CustomLoaderEvent.onLoadCompleted);
     }
 
@@ -78,5 +76,9 @@ export default class CustomLoader extends EventDispatcher {
         if (this._loadingSprite != null) {
             this._loadingSprite.setProgress(Math.floor(value * 100));
         }
+    }
+
+    public get isLoading(): boolean {
+        return this._loadingSprite != null;
     }
 }
