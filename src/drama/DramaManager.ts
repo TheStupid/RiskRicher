@@ -9,12 +9,11 @@ export default class DramaManager {
         return this._instance;
     }
 
-    private _baseDrama:Drama = null;
-    private _lastDrama:Drama = null;
+    private _mainDrama:Drama = null;
     private _curDrama:Drama = null;
 
-    changeDrama(newDrama:Drama,storageLastDrama:boolean):void{
-
+    changeDrama(newDrama:Drama):void{
+        
     }
 
     quitDrama():void{
