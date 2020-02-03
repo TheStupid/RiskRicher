@@ -12,7 +12,6 @@ export default class SceneManager {
         return this._instance;
     }
 
-    //有两种，一种是楼层场景，一种是特殊场景(副本)
     private _scene: Scene = null;
 
     constructor() {
